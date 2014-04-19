@@ -1,0 +1,32 @@
+build.xml
+org.eclipse.jdt.core.prefs
+.ant-targets-build.xml
+*~
+*#
+local.properties
+TODO.taskpaper
+*.apk
+.DS_Store
+add-proguard-release.xml
+obf/*
+*.log
+*_
+*.class
+*.iml
+R.java
+BuildConfig.java
+
+# don't add res/drawable-mdpi!
+drawable-mdpi/
+
+# for node
+node_modules
+
+.classpath
+lint.xml
+bin/
+gen/
+build/
+.test/
+.idea/
+.settings/
