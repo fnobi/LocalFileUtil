@@ -17,7 +17,7 @@ import android.net.Uri;
 public class LocalFileUtil {
 
     static public File create(Context context, String tmpFileName, Uri contentUri) {
-        String tmpFilePath = getLocalFileUtilPath(context, tmpFileName);
+        String tmpFilePath = getLocalFilePath(context, tmpFileName);
 
         File file;
         try {
@@ -43,7 +43,7 @@ public class LocalFileUtil {
     }
 
     static public File create(Context context, String tmpFileName, Bitmap bitmap) {
-        String tmpFilePath = getLocalFileUtilPath(context, tmpFileName);
+        String tmpFilePath = getLocalFilePath(context, tmpFileName);
 
         File file = new File(tmpFilePath);
         try {
@@ -60,7 +60,7 @@ public class LocalFileUtil {
         return null;
     }
 
-    static public String getLocalFileUtilPath(Context context, String tmpFileName) {
+    static public String getLocalFilePath(Context context, String tmpFileName) {
         String dataDir = appDirectory(context);
         if (dataDir == null) {
             return null;
