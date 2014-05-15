@@ -14,10 +14,10 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
 
-public class LoaclFileUtil {
+public class LocalFileUtil {
 
     static public File create(Context context, String tmpFileName, Uri contentUri) {
-        String tmpFilePath = getLoaclFileUtilPath(context, tmpFileName);
+        String tmpFilePath = getLocalFileUtilPath(context, tmpFileName);
 
         File file;
         try {
@@ -43,7 +43,7 @@ public class LoaclFileUtil {
     }
 
     static public File create(Context context, String tmpFileName, Bitmap bitmap) {
-        String tmpFilePath = getLoaclFileUtilPath(context, tmpFileName);
+        String tmpFilePath = getLocalFileUtilPath(context, tmpFileName);
 
         File file = new File(tmpFilePath);
         try {
@@ -60,7 +60,7 @@ public class LoaclFileUtil {
         return null;
     }
 
-    static public String getLoaclFileUtilPath(Context context, String tmpFileName) {
+    static public String getLocalFileUtilPath(Context context, String tmpFileName) {
         String dataDir = appDirectory(context);
         if (dataDir == null) {
             return null;
