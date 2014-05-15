@@ -1,4 +1,4 @@
-package com.fnobi.util;
+package com.fnobi.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,10 +14,10 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
 
-public class TmpFile {
+public class LoaclFileUtil {
 
     static public File create(Context context, String tmpFileName, Uri contentUri) {
-        String tmpFilePath = getTmpFilePath(context, tmpFileName);
+        String tmpFilePath = getLoaclFileUtilPath(context, tmpFileName);
 
         File file;
         try {
@@ -43,7 +43,7 @@ public class TmpFile {
     }
 
     static public File create(Context context, String tmpFileName, Bitmap bitmap) {
-        String tmpFilePath = getTmpFilePath(context, tmpFileName);
+        String tmpFilePath = getLoaclFileUtilPath(context, tmpFileName);
 
         File file = new File(tmpFilePath);
         try {
@@ -60,7 +60,16 @@ public class TmpFile {
         return null;
     }
 
-    static private String getTmpFilePath(Context context, String tmpFileName) {
+    static public String getLoaclFileUtilPath(Context context, String tmpFileName) {
+        String dataDir = appDirectory(context);
+        if (dataDir == null) {
+            return null;
+        }
+        String tmpFilePath = dataDir + "/" + tmpFileName;
+        return tmpFilePath;
+    }
+    
+    static public String appDirectory(Context context) {
         String dataDir = null;
         {
             PackageManager m = context.getPackageManager();
@@ -69,12 +78,9 @@ public class TmpFile {
                 PackageInfo p = m.getPackageInfo(s, 0);
                 dataDir = p.applicationInfo.dataDir;
             } catch (NameNotFoundException e) {
-                return null;
+                
             }
         }
-
-        String tmpFilePath = dataDir + "/" + tmpFileName;
-        return tmpFilePath;
+        return dataDir;
     }
-    
 }
