@@ -15,28 +15,40 @@ import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
 
 public class LocalFileUtil {
-
-    static public File create(Context context, String tmpFileName, Uri contentUri) {
+    
+    static public File create(Context context, InputStream input) {
+        return create(context, getRandomName(), input);
+    }
+    
+    static public File create(Context context, String tmpFileName, InputStream input) {
         String tmpFilePath = getLocalFilePath(context, tmpFileName);
-
-        File file;
+        File file = new File(tmpFilePath);
         try {
-            InputStream is = context.getContentResolver().openInputStream(contentUri);
-            file = new File(tmpFilePath);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             
             byte[] buffer = new byte[1024];
             int bytesRead;
-            while ((bytesRead = is.read(buffer)) != -1) {
+            while ((bytesRead = input.read(buffer)) != -1) {
                 fileOutputStream.write(buffer, 0, bytesRead);
             }
             fileOutputStream.close();
             
             return file;
+            
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
         } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    static public File create(Context context, String tmpFileName, Uri contentUri) {
+        try {
+            InputStream input = context.getContentResolver().openInputStream(contentUri);
+            return create(context, tmpFileName, input);
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
         }
@@ -47,9 +59,9 @@ public class LocalFileUtil {
 
         File file = new File(tmpFilePath);
         try {
-            FileOutputStream fos = new FileOutputStream(file);
-            bitmap.compress(CompressFormat.JPEG, 100, fos);
-            fos.close();
+            FileOutputStream output = new FileOutputStream(file);
+            bitmap.compress(CompressFormat.JPEG, 100, output);
+            output.close();
             return file;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -65,7 +77,7 @@ public class LocalFileUtil {
         if (dataDir == null) {
             return null;
         }
-        String tmpFilePath = dataDir + "/" + tmpFileName;
+        String tmpFilePath = String.format("%s/%s", dataDir, tmpFileName);
         return tmpFilePath;
     }
     
@@ -82,5 +94,9 @@ public class LocalFileUtil {
             }
         }
         return dataDir;
+    }
+    
+    static private String getRandomName() {
+        return ((Long) System.currentTimeMillis()).toString();
     }
 }
